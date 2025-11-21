@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐢 Sila MD - WhatsApp Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .qr-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+        }
+        
+        #qrCode {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .pairing-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .code-display {
+            background: #333;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🐢</div>
+        <h1>𝚂𝙸𝙻𝙰 𝙼𝙳</h1>
+        <p class="subtitle">Advanced WhatsApp Bot with AI Features</p>
+        
+        <div class="qr-container">
+            <h3>Scan QR Code</h3>
+            <div id="qrCode"></div>
+            <button class="btn" onclick="generateQR()">Generate New QR</button>
+        </div>
+        
+        <div class="pairing-section">
+            <h3>Or Use Pairing Code</h3>
+            <div class="input-group">
+                <input type="text" id="phoneNumber" placeholder="Enter your phone number (e.g., 255612491554)" maxlength="15">
+            </div>
+            <button class="btn" onclick="getPairingCode()">Get Pairing Code</button>
+            <div id="codeResult" class="code-display" style="display: none;"></div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <h4>AI Chat</h4>
+                <p>Smart conversations</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎵</div>
+                <h4>Media Download</h4>
+                <p>Music & Videos</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h4>Group Tools</h4>
+                <p>Moderation</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h4>Fast</h4>
+                <p>Lightning fast</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate QR code on page load
+        window.onload = generateQR;
+        
+        async function generateQR() {
+            const qrContainer = document.getElementById('qrCode');
+            qrContainer.innerHTML = '<p>Generating QR code...</p>';
+            
+            try {
+                const response = await fetch('/qr');
+                const data = await response.json();
+                
+                if (data.success) {
+                    qrContainer.innerHTML = `<img src="${data.qrCode}" alt="QR Code">`;
+                } else {
+                    qrContainer.innerHTML = `<p>Error: ${data.message}</p>`;
+                }
+            } catch (error) {
+                qrContainer.innerHTML = `<p>Error generating QR code</p>`;
+            }
+        }
+        
+        async function getPairingCode() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const codeResult = document.getElementById('codeResult');
+            
+            if (!phoneNumber) {
+                alert('Please enter your phone number');
+                return;
+            }
+            
+            codeResult.style.display = 'none';
+            
+            try {
+                const response = await fetch(`/pair?number=${phoneNumber}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    codeResult.innerHTML = `Pairing Code: ${data.pairingCode}`;
+                    codeResult.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            } catch (error) {
+                alert('Error getting pairing code');
+            }
+        }
+    </script>
+</body>
+</html>

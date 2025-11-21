@@ -1,0 +1,51 @@
+{
+  "name": "Sila MD WhatsApp Bot",
+  "description": "Advanced WhatsApp Bot with AI features built on Baileys",
+  "repository": "https://github.com/silatech/sila-md-bot",
+  "logo": "https://files.catbox.moe/jwmx1j.jpg",
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "ai",
+    "baileys",
+    "nodejs",
+    "automation"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "BOT_OWNER": {
+      "description": "Your WhatsApp number with country code (e.g., 255612491554@s.whatsapp.net)",
+      "value": "255612491554@s.whatsapp.net",
+      "required": true
+    },
+    "BOT_NAME": {
+      "description": "Name of your bot",
+      "value": "𝚂𝙸𝙻𝙰 𝙼𝙳",
+      "required": true
+    },
+    "SESSION_ID": {
+      "description": "Your session ID for authentication (optional)",
+      "value": "",
+      "required": false
+    },
+    "PREFIX": {
+      "description": "Bot command prefix",
+      "value": ".",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 0,
+      "size": "free"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
+}

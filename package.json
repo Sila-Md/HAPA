@@ -1,0 +1,47 @@
+{
+  "name": "sila-md-bot",
+  "version": "3.0.0",
+  "description": "Sila MD - Advanced WhatsApp Bot with AI Features",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "website": "node app.js",
+    "pm2": "pm2 start index.js --name sila-md",
+    "pm2-website": "pm2 start app.js --name sila-website",
+    "pm2-all": "pm2 start ecosystem.config.js",
+    "dev": "nodemon index.js",
+    "heroku-prebuild": "npm install",
+    "heroku-postbuild": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "6.4.0",
+    "express": "^4.18.0",
+    "axios": "^1.6.0",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "chalk": "^4.1.2",
+    "pino": "^8.15.0",
+    "dotenv": "^16.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "keywords": [
+    "whatsapp-bot",
+    "sila-md",
+    "baileys",
+    "ai-bot",
+    "whatsapp",
+    "bot"
+  ],
+  "author": "Sila Tech",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silatech/sila-md-bot"
+  }
+}
